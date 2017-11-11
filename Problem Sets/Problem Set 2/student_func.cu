@@ -152,6 +152,19 @@ void separateChannels(const uchar4* const inputImageRGBA,
   // {
   //     return;
   // }
+  int x = threadIdx.x + (blockIdx.x * blockDim.x);
+  int y = threadIdx.y + (blockIdx.y * blockDim.y);
+
+  if(x >= numCols || y >= numRows)
+  {
+    return;
+  }
+
+  int offset = (numCols * y) + x;
+
+  redChannel[offset] = inputImageRGBA.x;
+  greenChannel[offset] = inputImageRGBA.y;
+  blueChannel[offset] = inputImageRGBA.z;
 }
 
 //This kernel takes in three color channels and recombines them

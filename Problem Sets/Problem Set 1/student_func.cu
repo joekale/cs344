@@ -54,7 +54,7 @@ void rgba_to_greyscale(const uchar4* const rgbaImage,
   int x = threadIdx.x + (blockIdx.x * blockDim.x);
   int y = threadIdx.y + (blockIdx.y * blockDim.y);
 
-  if(x > numCols || y > numRows)
+  if(x >= numCols || y >= numRows)
   {
     return;
   }
@@ -75,7 +75,7 @@ void your_rgba_to_greyscale(const uchar4 * const h_rgbaImage, uchar4 * const d_r
 
 
   const dim3 blockSize(32, 32, 1);  //TODO
-  const dim3 gridSize(std::ceil(numCols/32), std::ceil(numRows/32), 1);
+  const dim3 gridSize(std::ceil(numCols/32.0f), std::ceil(numRows/32.0f), 1);
   rgba_to_greyscale<<<gridSize, blockSize>>>(d_rgbaImage, d_greyImage, numRows, numCols);
   
   cudaDeviceSynchronize(); checkCudaErrors(cudaGetLastError());
